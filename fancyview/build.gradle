@@ -1,0 +1,108 @@
+apply plugin: 'com.android.library'
+
+group = 'com.menil.fancyview'
+version = '0.0.1'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    task generateSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        classifier 'sources'
+    }
+
+//    task generateJavadocs(type: Javadoc) {
+//        source = android.sourceSets.main.java.srcDirs
+//        classpath += project.files(android.getBootClasspath()
+//                .join(File.pathSeparator))
+//        failOnError false
+//    }
+//    task generateJavadocsJar(type: Jar) {
+//        from generateJavadocs.destinationDir
+//        classifier 'javadoc'
+//    }
+//    generateJavadocsJar.dependsOn generateJavadocs
+
+    artifacts {
+//        archives generateJavaDocsJar
+        archives generateSourcesJar
+    }
+
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'com.github.dcendents.android-maven'
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'FacnyView'
+            description 'A test lib'
+            inceptionYear '2016'
+
+            packaging 'aar'
+            groupId 'com.menilv'
+            artifactId 'fancyview'
+            version '0.0.1'
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+//                connection 'https://github.com/googlesamples/easygoogle.git'
+//                url 'https://github.com/googlesamples/easygoogle'
+
+            }
+            developers {
+                developer {
+                    name 'Menilv'
+                }
+            }
+        }
+    }
+}
+bintray {
+    user = 'menilv'
+    key = '0d20e962ebbfc43f2eee0b8c6c90aeb98b6f4e99'
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'com.menil.fancyview'
+        licenses = ['Apache-2.0']
+
+        version {
+            name = '0.0.1'
+            desc = 'Bintray testing lib'
+            released  = new Date()
+            vcsTag = '0.0.1'
+        }
+
+        vcsUrl = 'https://github.com/hathibelagal/LibraryTutorial.git'
+//        websiteUrl = 'https://github.com/hathibelagal/LibraryTutorial'
+    }
+
+}
